@@ -3,12 +3,13 @@ import Form, { FormProps } from "antd/es/form";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
 import {
-  ButtonContainer,
-  Container,
+  ButtonWrapper,
+  FormWrapper,
   HeaderText,
-  InputContainer,
   Image,
+  InputWrapper,
   LoginContainer,
+  LoginWrapper,
 } from "./Login.styles";
 
 import MainLogo from "../../assets/logo.png";
@@ -33,60 +34,61 @@ const Login: React.FC<Props> = () => {
   };
 
   return (
-    <Container>
-      <LoginContainer>
+    <LoginContainer>
+      <LoginWrapper>
         <Image alt="Escabros Logo" src={MainLogo} />
         <HeaderText>Welcome, please login your account!</HeaderText>
-        <Form
-          style={{ width: "100%", padding: "2rem" }}
-          name="login"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-        >
-          <Form.Item<LoginFieldType>
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: "Please input your email!",
-              },
-            ]}
+        <FormWrapper>
+          <Form
+            name="login"
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
           >
-            <InputContainer
-              prefix={<UserOutlined />}
-              placeholder="Email"
-              type="email"
-            />
-          </Form.Item>
-          <Form.Item<LoginFieldType>
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: "Please input your password!",
-              },
-            ]}
-          >
-            <InputContainer
-              prefix={<LockOutlined />}
-              type="password"
-              placeholder="Password"
-            />
-          </Form.Item>
-          <Form.Item>
-            <ButtonContainer>
-              <Button
-                htmlType="submit"
-                //   loading={loading}
-                type="primary"
-              >
-                Log In
-              </Button>
-            </ButtonContainer>
-          </Form.Item>
-        </Form>
-      </LoginContainer>
-    </Container>
+            <Form.Item<LoginFieldType>
+              name="email"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your email!",
+                },
+              ]}
+            >
+              <InputWrapper
+                prefix={<UserOutlined />}
+                placeholder="Email"
+                type="email"
+              />
+            </Form.Item>
+            <Form.Item<LoginFieldType>
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your password!",
+                },
+              ]}
+            >
+              <InputWrapper
+                prefix={<LockOutlined />}
+                type="password"
+                placeholder="Password"
+              />
+            </Form.Item>
+            <Form.Item>
+              <ButtonWrapper>
+                <Button
+                  htmlType="submit"
+                  //   loading={loading}
+                  type="primary"
+                >
+                  Log In
+                </Button>
+              </ButtonWrapper>
+            </Form.Item>
+          </Form>
+        </FormWrapper>
+      </LoginWrapper>
+    </LoginContainer>
   );
 };
 

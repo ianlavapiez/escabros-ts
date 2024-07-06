@@ -2,17 +2,22 @@ import styled from "styled-components";
 import Input from "antd/es/input";
 import Text from "antd/es/typography/Text";
 
-export const ButtonContainer = styled.div`
+export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-export const Container = styled.div`
+export const LoginContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+`;
+
+export const FormWrapper = styled.div`
+  width: 100%;
+  padding: 2rem;
 `;
 
 export const HeaderText = styled(Text)`
@@ -33,13 +38,13 @@ export const Image = styled.img`
   }
 `;
 
-export const InputContainer = styled(Input)`
+export const InputWrapper = styled(Input)`
   padding: 0.7rem;
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
 `;
 
-export const LoginContainer = styled.div`
+export const LoginWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
