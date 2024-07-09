@@ -1,6 +1,8 @@
 import React from "react";
 import Form, { FormProps } from "antd/es/form";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import MainLogo from "@assets/logo.png";
+import Button from "@components/button/Button";
 
 import {
   ButtonWrapper,
@@ -12,17 +14,14 @@ import {
   LoginWrapper,
 } from "./Login.styles";
 
-import MainLogo from "../../assets/logo.png";
-import { Button } from "../../components";
-
 type LoginFieldType = {
   email: string;
   password: string;
 };
 
-type Props = object;
+type LoginProps = object;
 
-const Login: React.FC<Props> = () => {
+const Login: React.FC<LoginProps> = () => {
   const onFinish: FormProps<LoginFieldType>["onFinish"] = (values) => {
     console.log(values);
   };

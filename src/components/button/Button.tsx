@@ -1,5 +1,5 @@
 import React from "react";
-import { ButtonProps } from "antd";
+import { ButtonProps } from "antd/es/button";
 import clsx from "clsx";
 
 import { ButtonContainer } from "./Button.styles";
@@ -7,21 +7,10 @@ import { ButtonContainer } from "./Button.styles";
 const Button: React.FC<ButtonProps> = ({
   children,
   className,
-  disabled,
-  htmlType,
-  loading,
-  onClick,
-  type,
+  ...buttonProps
 }) => {
   return (
-    <ButtonContainer
-      className={clsx(className)}
-      disabled={disabled}
-      htmlType={htmlType}
-      onClick={onClick}
-      loading={loading}
-      type={type}
-    >
+    <ButtonContainer className={clsx(className)} {...buttonProps}>
       {children}
     </ButtonContainer>
   );
