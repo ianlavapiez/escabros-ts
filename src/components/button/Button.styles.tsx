@@ -7,6 +7,7 @@ export const AddButtonContainer = styled(Button)`
   margin: 10px;
   border-radius: 5px;
   border: none;
+  margin-bottom: 20px;
 `;
 
 export const ButtonContainer = styled(Button)`
