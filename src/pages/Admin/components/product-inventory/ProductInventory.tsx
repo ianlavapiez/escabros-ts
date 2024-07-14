@@ -1,11 +1,12 @@
 import React from "react";
-import AddButton from "@components/button/AddButton";
+
+import AddButton from "components/button/AddButton";
 import {
   ContentContainer,
   LayoutContainer,
-} from "@components/layout/Layout.styles";
-import AdminTitle from "@components/typography/AdminTitle";
-import useModal from "@hooks/useModal";
+} from "components/layout/Layout.styles";
+import AdminTitle from "components/typography/AdminTitle";
+import useModal from "hooks/useModal";
 
 import ProductInventoryModal from "./components/Modal";
 import ProductInventoryTable from "./components/Table";

@@ -1,11 +1,12 @@
 import React from "react";
+
 import {
   ContentContainer,
   LayoutContainer,
-} from "@components/layout/Layout.styles";
-import AddButton from "@components/button/AddButton";
-import AdminTitle from "@components/typography/AdminTitle";
-import useModal from "@hooks/useModal";
+} from "components/layout/Layout.styles";
+import AddButton from "components/button/AddButton";
+import AdminTitle from "components/typography/AdminTitle";
+import useModal from "hooks/useModal";
 
 import MedicineModal from "./components/Modal";
 import MedicineTable from "./components/Table";

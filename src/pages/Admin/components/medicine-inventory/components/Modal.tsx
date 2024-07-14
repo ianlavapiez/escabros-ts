@@ -1,10 +1,12 @@
 import React from "react";
-import SubmitButton from "@components/button/SubmitButton";
-import ExpirationDatePicker from "@components/date-picker/ExpirationDatePicker";
+
 import Form from "antd/es/form";
 import Input from "antd/es/input";
 import Modal, { ModalProps } from "antd/es/modal";
-import { layout } from "@utils/layout";
+
+import SubmitButton from "components/button/SubmitButton";
+import ExpirationDatePicker from "components/date-picker/ExpirationDatePicker";
+import { layout } from "utils/layout";
 
 type MedicineInventoryModalFieldType = {
   expirationDate: string;

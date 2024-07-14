@@ -8,6 +8,7 @@ import Dropdown from "antd/es/dropdown";
 import Layout from "antd/es/layout";
 import Menu, { MenuProps } from "antd/es/menu";
 import Title from "antd/es/typography/Title";
+
 import { medicineCategories, productCategories } from "./constants";
 
 import MedicineInventory from "./components/medicine-inventory/MedicineInventory";

@@ -1,8 +1,9 @@
 import React from "react";
 import Form, { FormProps } from "antd/es/form";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import MainLogo from "@assets/logo.png";
-import Button from "@components/button/Button";
+
+import MainLogo from "assets/logo.png";
+import Button from "components/button/Button";
 
 import {
   ButtonWrapper,
