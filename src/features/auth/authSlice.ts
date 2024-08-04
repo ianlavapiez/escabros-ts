@@ -3,7 +3,7 @@ import { User } from "firebase/auth";
 
 import { logout, signIn } from "./authThunks";
 
-export type AuthState = {
+type AuthState = {
   error: string | null;
   loading: boolean;
   user: User | null;
