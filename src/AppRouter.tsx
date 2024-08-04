@@ -1,5 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 
+import PrivateRoute from "routes/PrivateRoute";
+
 import { AdminPage, LoginPage } from "./pages";
 
 const router = createBrowserRouter([
@@ -9,7 +11,13 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <AdminPage />,
+    element: <PrivateRoute />,
+    children: [
+      {
+        path: "",
+        element: <AdminPage />,
+      },
+    ],
   },
 ]);
 

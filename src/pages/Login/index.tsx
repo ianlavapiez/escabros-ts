@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Form, { FormProps } from "antd/es/form";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 import MainLogo from "assets/logo.png";
 import Button from "components/button/Button";
+import { signIn } from "features/auth/authThunks";
+import { useAuthSelector } from "features/auth/authSelector";
+import { useAppDispatch } from "hooks/useDispatchSelector";
+import { Login as LoginType } from "types/auth";
 
 import {
   ButtonWrapper,
@@ -15,16 +20,20 @@ import {
   LoginWrapper,
 } from "./Login.styles";
 
-type LoginFieldType = {
-  email: string;
-  password: string;
-};
+type LoginFieldType = LoginType;
 
 type LoginProps = object;
 
 const Login: React.FC<LoginProps> = () => {
-  const onFinish: FormProps<LoginFieldType>["onFinish"] = (values) => {
-    console.log(values);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [error, loading, user] = useAuthSelector();
+
+  const onFinish: FormProps<LoginFieldType>["onFinish"] = async ({
+    email,
+    password,
+  }) => {
+    dispatch(signIn({ email, password }));
   };
 
   const onFinishFailed: FormProps<LoginFieldType>["onFinishFailed"] = (
@@ -32,6 +41,12 @@ const Login: React.FC<LoginProps> = () => {
   ) => {
     console.log("Failed:", errorInfo);
   };
+
+  useEffect(() => {
+    if (user) {
+      navigate("/admin");
+    }
+  }, [navigate, user]);
 
   return (
     <LoginContainer>
@@ -76,11 +91,7 @@ const Login: React.FC<LoginProps> = () => {
             </Form.Item>
             <Form.Item>
               <ButtonWrapper>
-                <Button
-                  htmlType="submit"
-                  //   loading={loading}
-                  type="primary"
-                >
+                <Button htmlType="submit" loading={loading} type="primary">
                   Log In
                 </Button>
               </ButtonWrapper>

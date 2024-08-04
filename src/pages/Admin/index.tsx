@@ -9,6 +9,9 @@ import Layout from "antd/es/layout";
 import Menu, { MenuProps } from "antd/es/menu";
 import Title from "antd/es/typography/Title";
 
+import { logout } from "features/auth/authThunks";
+import { useAppDispatch } from "hooks/useDispatchSelector";
+
 import { medicineCategories, productCategories } from "./constants";
 
 import MedicineInventory from "./components/medicine-inventory/MedicineInventory";
@@ -23,6 +26,7 @@ import {
   LayoutContainer,
   UserButtonContainer,
 } from "./AdminPage.styles";
+import { useAuthSelector } from "features/auth/authSelector";
 
 const { Sider } = Layout;
 
@@ -32,6 +36,14 @@ const Admin: React.FC<AdminProps> = () => {
   const [selectedKey, setSelectedKey] = useState("dashboard");
   const [isManagePasswordOpen, setIsManagePasswordOpen] = useState(false);
   const [isUserProfileOpen, setIsUserProfileOpen] = useState(false);
+
+  const [error, loading] = useAuthSelector();
+
+  const dispatch = useAppDispatch();
+
+  const signOut = () => {
+    dispatch(logout());
+  };
 
   //   <Menu>
   //   <Menu.Item onClick={() => setIsUserProfileVisible(true)}>
@@ -54,7 +66,7 @@ const Admin: React.FC<AdminProps> = () => {
     },
     {
       key: "3",
-      label: <p>Sign Out</p>,
+      label: <p onClick={signOut}>Sign Out</p>,
     },
   ];
 
@@ -76,6 +88,7 @@ const Admin: React.FC<AdminProps> = () => {
               color: "white",
               width: 150,
             }}
+            loading={loading}
             icon={<SettingOutlined />}
           >
             Admin
