@@ -1,18 +1,17 @@
 import React from "react";
-import Form from "antd/es/form";
+import Form, { FormProps } from "antd/es/form";
 import Input from "antd/es/input";
 import Modal, { ModalProps } from "antd/es/modal";
 
 import SubmitButton from "components/button/SubmitButton";
+import { useMedicinesSelector } from "features/medicines/medicinesSelector";
+import { addMedicine } from "features/medicines/medicinesThunks";
+import { useAppDispatch } from "hooks/useDispatchSelector";
+import { Medicine } from "types/medicines";
 import { layout } from "utils/layout";
 
-type MedicineFieldType = {
-  id?: string;
-  brandName: string;
-  costPrice: string;
-  dose: string;
-  genericName?: string;
-  sellingPrice: string;
+type MedicineFieldType = Omit<Medicine, "id"> & {
+  id?: Medicine["id"];
 };
 
 type MedicineModalProps = Partial<ModalProps> & {
@@ -25,9 +24,20 @@ const MedicineModal: React.FC<MedicineModalProps> = ({
   open,
   setOpen,
 }) => {
+  const dispatch = useAppDispatch();
+  const [error, loading] = useMedicinesSelector();
+
+  const onFinish: FormProps<MedicineFieldType>["onFinish"] = async (
+    medicine
+  ) => {
+    dispatch(addMedicine(medicine));
+  };
+
   const onCancel = () => {
     setOpen(false);
   };
+
+  const onAddFinish = () => {};
 
   return (
     <Modal
@@ -37,7 +47,7 @@ const MedicineModal: React.FC<MedicineModalProps> = ({
       open={open}
       onCancel={onCancel}
     >
-      <Form {...layout} preserve={false}>
+      <Form {...layout} onFinish={onFinish} preserve={false}>
         <Input type="hidden" readOnly name="id" className="id" />
         <Form.Item<MedicineFieldType>
           label="Generic Name"
@@ -100,7 +110,7 @@ const MedicineModal: React.FC<MedicineModalProps> = ({
           <Input type="number" />
         </Form.Item>
         <Form.Item>
-          <SubmitButton type="primary" htmlType="submit">
+          <SubmitButton htmlType="submit" loading={loading} type="primary">
             {isEdit ? "Update Medicine" : "Add Medicine"}
           </SubmitButton>
         </Form.Item>
