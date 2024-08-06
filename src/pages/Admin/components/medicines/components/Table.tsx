@@ -197,6 +197,11 @@ const MedicineTable: React.FC<MedicineTableProps> = ({
       key: "sellingPrice",
     },
     {
+      title: "Quantity",
+      dataIndex: "quantity",
+      key: "quantity",
+    },
+    {
       title: "Actions",
       key: "actions",
       render: (_, record) => (

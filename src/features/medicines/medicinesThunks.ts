@@ -19,9 +19,14 @@ export const addMedicine = createAsyncThunk<
   { rejectValue: RejectError }
 >("medicines/addMedicine", async (medicine, { rejectWithValue }) => {
   try {
-    const docRef = await addDoc(collection(db, "medicines"), medicine);
+    const medicineWithQuantity = { ...medicine, quantity: 0 };
 
-    return { id: docRef.id, ...medicine };
+    const docRef = await addDoc(
+      collection(db, "medicines"),
+      medicineWithQuantity
+    );
+
+    return { id: docRef.id, ...medicineWithQuantity };
   } catch (err) {
     return rejectWithValue({ message: parseErrorMessage(err) });
   }

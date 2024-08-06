@@ -5,4 +5,5 @@ export type Medicine = {
   dose: string;
   costPrice: number;
   sellingPrice: number;
+  quantity: number;
 };
