@@ -13,7 +13,7 @@ import { useAppDispatch } from "hooks/useDispatchSelector";
 import { Medicine } from "types/medicines";
 import { layout } from "utils/layout";
 
-type MedicineFieldType = Omit<Medicine, "id"> & {
+type MedicineFieldType = Omit<Medicine, "id" | "quantity"> & {
   id?: Medicine["id"];
 };
 
@@ -36,10 +36,12 @@ const MedicineModal: React.FC<MedicineModalProps> = ({
     medicine
   ) => {
     if (!isEdit) {
-      dispatch(addMedicine(medicine));
+      dispatch(addMedicine({ quantity: 0, ...medicine }));
     } else {
       if (data) {
-        dispatch(updateMedicine({ id: data.id, ...medicine }));
+        dispatch(
+          updateMedicine({ id: data.id, quantity: data.quantity, ...medicine })
+        );
       }
     }
   };

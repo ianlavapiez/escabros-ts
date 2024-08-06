@@ -1,50 +1,37 @@
 import React, { useRef, useState } from "react";
-import { SearchOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 import type { InputRef, TableColumnsType, TableColumnType } from "antd";
-import { Button, Input, Space, Table } from "antd";
+import { Button, Input, Space, Table, Tooltip } from "antd";
 import type { FilterDropdownProps } from "antd/es/table/interface";
 import Highlighter from "react-highlight-words";
 
-interface DataType {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-}
+import { fireAlertWithConfirmation } from "components/sweet-alert/SweetAlert";
+import { deleteProduct } from "features/products/productsThunks";
+import { useProductsSelector } from "features/products/productsSelector";
+import { useAppDispatch } from "hooks/useDispatchSelector";
+import { Product } from "types/products";
 
-type DataIndex = keyof DataType;
+type DataIndex = keyof Product;
 
-const data: DataType[] = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-  },
-  {
-    key: "2",
-    name: "Joe Black",
-    age: 42,
-    address: "London No. 1 Lake Park",
-  },
-  {
-    key: "3",
-    name: "Jim Green",
-    age: 32,
-    address: "Sydney No. 1 Lake Park",
-  },
-  {
-    key: "4",
-    name: "Jim Red",
-    age: 32,
-    address: "London No. 2 Lake Park",
-  },
-];
+type ProductTableProps = {
+  onEditLinkClick: () => void;
+  setData: React.Dispatch<React.SetStateAction<Product | null>>;
+};
 
-const MedicineTable: React.FC = () => {
+const ProductTable: React.FC<ProductTableProps> = ({
+  onEditLinkClick,
+  setData,
+}) => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
+
+  const dispatch = useAppDispatch();
+  const [, loading, products] = useProductsSelector();
 
   const handleSearch = (
     selectedKeys: string[],
@@ -61,9 +48,27 @@ const MedicineTable: React.FC = () => {
     setSearchText("");
   };
 
+  const handleDelete = (id: string) => {
+    fireAlertWithConfirmation(
+      "Are you sure you want to delete the selected product details?",
+      (confirmed) => {
+        if (confirmed) {
+          dispatch(deleteProduct(id));
+        } else {
+          return false;
+        }
+      }
+    );
+  };
+
+  const handleEdit = (data: Product) => {
+    setData(data);
+    onEditLinkClick();
+  };
+
   const getColumnSearchProps = (
     dataIndex: DataIndex
-  ): TableColumnType<DataType> => ({
+  ): TableColumnType<Product> => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -152,32 +157,66 @@ const MedicineTable: React.FC = () => {
       ),
   });
 
-  const columns: TableColumnsType<DataType> = [
+  const columns: TableColumnsType<Product> = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      width: "30%",
-      ...getColumnSearchProps("name"),
+      title: "Barcode",
+      dataIndex: "barcode",
+      key: "barcode",
+      ...getColumnSearchProps("barcode"),
     },
     {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
-      width: "20%",
-      ...getColumnSearchProps("age"),
+      title: "Product Name",
+      dataIndex: "productName",
+      key: "productName",
+      ...getColumnSearchProps("productName"),
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-      ...getColumnSearchProps("address"),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortDirections: ["descend", "ascend"],
+      title: "Size",
+      dataIndex: "size",
+      key: "size",
+    },
+    {
+      title: "Cost Price",
+      dataIndex: "costPrice",
+      key: "costPrice",
+    },
+    {
+      title: "Selling Price",
+      dataIndex: "sellingPrice",
+      key: "sellingPrice",
+    },
+    {
+      title: "Quantity",
+      dataIndex: "quantity",
+      key: "quantity",
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (_, record) => (
+        <Space size="middle">
+          <Tooltip title="Edit">
+            <Button
+              icon={<EditOutlined />}
+              onClick={() => handleEdit(record)}
+              shape="circle"
+              type="primary"
+            />
+          </Tooltip>
+          <Tooltip title="Delete">
+            <Button
+              danger
+              icon={<DeleteOutlined />}
+              onClick={() => handleDelete(record.id)}
+              shape="circle"
+            />
+          </Tooltip>
+        </Space>
+      ),
     },
   ];
 
-  return <Table columns={columns} dataSource={data} />;
+  return <Table columns={columns} dataSource={products} loading={loading} />;
 };
 
-export default MedicineTable;
+export default ProductTable;
