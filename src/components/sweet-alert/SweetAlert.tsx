@@ -9,7 +9,7 @@ export const fireAlertWithConfirmation = (
 
   MySwal.fire({
     title: <p> {confirmationText}</p>,
-    footer: "Escabros Inventory and Management System",
+    footer: "Escabros Pharmacy v2",
     icon: "warning",
     showCancelButton: true,
     cancelButtonColor: "#d33",

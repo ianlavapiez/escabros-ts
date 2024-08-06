@@ -45,17 +45,12 @@ export const fetchMedicines = createAsyncThunk<
   Medicine[],
   void,
   { rejectValue: RejectError }
->("medicines/fetchMedicines", async (_, { rejectWithValue }) => {
-  try {
-    const querySnapshot = await getDocs(collection(db, "medicines"));
-
-    return querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as Medicine[];
-  } catch (err) {
-    return rejectWithValue({ message: parseErrorMessage(err) });
-  }
+>("medicines/fetchMedicines", async () => {
+  const querySnapshot = await getDocs(collection(db, "medicines"));
+  return querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as Medicine[];
 });
 
 export const updateMedicine = createAsyncThunk<

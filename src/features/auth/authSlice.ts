@@ -63,7 +63,7 @@ const authSlice = createSlice({
 export const clearSuccessMessage = () => (dispatch: AppDispatch) => {
   setTimeout(() => {
     dispatch(setSuccessMessage(null));
-  }, 5000);
+  }, 4000);
 };
 
 export const { setSuccessMessage } = authSlice.actions;

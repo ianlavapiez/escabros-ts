@@ -5,7 +5,10 @@ import Modal, { ModalProps } from "antd/es/modal";
 
 import SubmitButton from "components/button/SubmitButton";
 import { useMedicinesSelector } from "features/medicines/medicinesSelector";
-import { addMedicine } from "features/medicines/medicinesThunks";
+import {
+  addMedicine,
+  updateMedicine,
+} from "features/medicines/medicinesThunks";
 import { useAppDispatch } from "hooks/useDispatchSelector";
 import { Medicine } from "types/medicines";
 import { layout } from "utils/layout";
@@ -15,29 +18,35 @@ type MedicineFieldType = Omit<Medicine, "id"> & {
 };
 
 type MedicineModalProps = Partial<ModalProps> & {
+  data: Medicine | null;
   isEdit: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const MedicineModal: React.FC<MedicineModalProps> = ({
+  data,
   isEdit,
   open,
   setOpen,
 }) => {
   const dispatch = useAppDispatch();
-  const [error, loading] = useMedicinesSelector();
+  const [, loading] = useMedicinesSelector();
 
   const onFinish: FormProps<MedicineFieldType>["onFinish"] = async (
     medicine
   ) => {
-    dispatch(addMedicine(medicine));
+    if (!isEdit) {
+      dispatch(addMedicine(medicine));
+    } else {
+      if (data) {
+        dispatch(updateMedicine({ id: data.id, ...medicine }));
+      }
+    }
   };
 
   const onCancel = () => {
     setOpen(false);
   };
-
-  const onAddFinish = () => {};
 
   return (
     <Modal
@@ -48,7 +57,6 @@ const MedicineModal: React.FC<MedicineModalProps> = ({
       onCancel={onCancel}
     >
       <Form {...layout} onFinish={onFinish} preserve={false}>
-        <Input type="hidden" readOnly name="id" className="id" />
         <Form.Item<MedicineFieldType>
           label="Generic Name"
           name="genericName"
@@ -59,7 +67,7 @@ const MedicineModal: React.FC<MedicineModalProps> = ({
             },
           ]}
         >
-          <Input />
+          <Input defaultValue={isEdit ? data?.genericName : ""} />
         </Form.Item>
         <Form.Item<MedicineFieldType>
           label="Brand Name"
@@ -71,7 +79,7 @@ const MedicineModal: React.FC<MedicineModalProps> = ({
             },
           ]}
         >
-          <Input />
+          <Input defaultValue={isEdit ? data?.brandName : ""} />
         </Form.Item>
         <Form.Item<MedicineFieldType>
           label="Dose"
@@ -83,7 +91,7 @@ const MedicineModal: React.FC<MedicineModalProps> = ({
             },
           ]}
         >
-          <Input />
+          <Input defaultValue={isEdit ? data?.dose : ""} />
         </Form.Item>
         <Form.Item<MedicineFieldType>
           label="Cost Price"
@@ -95,7 +103,7 @@ const MedicineModal: React.FC<MedicineModalProps> = ({
             },
           ]}
         >
-          <Input type="number" />
+          <Input defaultValue={isEdit ? data?.costPrice : ""} type="number" />
         </Form.Item>
         <Form.Item<MedicineFieldType>
           label="Selling Price"
@@ -107,7 +115,10 @@ const MedicineModal: React.FC<MedicineModalProps> = ({
             },
           ]}
         >
-          <Input type="number" />
+          <Input
+            defaultValue={isEdit ? data?.sellingPrice : ""}
+            type="number"
+          />
         </Form.Item>
         <Form.Item>
           <SubmitButton htmlType="submit" loading={loading} type="primary">
